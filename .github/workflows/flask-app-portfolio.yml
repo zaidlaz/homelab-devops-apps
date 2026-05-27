@@ -34,12 +34,12 @@ jobs:
 
       - name: Update Kubernetes manifest image tag
         run: |
-          sed -i "s|image: zaid/flask-app-portfolio:.*|image: zaid/flask-app-portfolio:${{ github.sha }}|" k8s-apps/flask_app_portfolio/deployment.yaml
-
-      - name: Commit updated image tag
+           sed -i "s|image: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app-portfolio:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/flask-app-portfolio:${{ github.sha }}|" k8s-apps/flask_app_portfolio/deployment.yaml
+ 
+     - name: Commit updated image tag
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add k8s-apps/flask-app-portfolio/deployment.yaml
+          git add k8s-apps/flask_app_portfolio/deployment.yaml
           git commit -m "Update Flask Portfolio image tag" || echo "No changes"
           git push
