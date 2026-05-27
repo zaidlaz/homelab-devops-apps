@@ -1,11 +1,14 @@
 name: Build and Push Flask Portfolio App
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - "flask-app-portfolio/**"
+      - "flask_app_portfolio/**"
+      - "k8s-apps/flask_app_portfolio/**"
+      - ".github/workflows/flask-app-portfolio.yml"
 
 jobs:
   build:
