@@ -26,11 +26,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t zaid/flask-app-portfolio:${{ github.sha }} ./flask-app-portfolio
+          sudo docker build -t zaid/flask-app-portfolio:${{ github.sha }} ./flask_app_portfolio
 
       - name: Push Docker image
         run: |
-          docker push zaid/flask-app-portfolio:${{ github.sha }}
+          sudo docker push zaid/flask-app-portfolio:${{ github.sha }}
 
       - name: Update Kubernetes manifest image tag
         run: |
