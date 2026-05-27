@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="card">
+    <h2>Projects</h2>
+
+    {% for project in profile.projects %}
+        <div class="project-item">
+            <h3>{{ project.title }}</h3>
+     {% if project.repo_url %}
+      <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer">
+        View GitHub Repo
+      </a>
+     {% endif %}
+            <p>{{ project.description }}</p>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}

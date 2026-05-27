@@ -2,5 +2,7 @@ venv/
 __pycache__/
 *.pyc
 logs/
-instance/*.db
+*.log
 *.swp
+instance/*.db
+.env
