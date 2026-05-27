@@ -8,7 +8,7 @@ on:
     paths:
       - "flask_app_portfolio/**"
       - "k8s-apps/flask_app_portfolio/**"
-      - ".github/workflows/flask-app-portfolio.yml"
+      - ".github/workflows/flask_app_portfolio.yml"
 
 jobs:
   build:
