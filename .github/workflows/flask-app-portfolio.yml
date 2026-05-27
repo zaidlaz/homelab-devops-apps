@@ -23,15 +23,15 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t zaidlaz/flask-app-portfolio:${{ github.sha }} ./flask-app-portfolio
+          docker build -t zaid/flask-app-portfolio:${{ github.sha }} ./flask-app-portfolio
 
       - name: Push Docker image
         run: |
-          docker push zaidlaz/flask-app-portfolio:${{ github.sha }}
+          docker push zaid/flask-app-portfolio:${{ github.sha }}
 
       - name: Update Kubernetes manifest image tag
         run: |
-          sed -i "s|image: zaidlaz/flask-app-portfolio:.*|image: zaidlaz/flask-app-portfolio:${{ github.sha }}|" k8s-apps/flask-app-portfolio/deployment.yaml
+          sed -i "s|image: zaid/flask-app-portfolio:.*|image: zaid/flask-app-portfolio:${{ github.sha }}|" k8s-apps/flask-app-portfolio/deployment.yaml
 
       - name: Commit updated image tag
         run: |
