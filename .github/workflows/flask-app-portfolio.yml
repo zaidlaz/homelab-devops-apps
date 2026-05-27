@@ -8,7 +8,7 @@ on:
     paths:
       - "flask_app_portfolio/**"
       - "k8s-apps/flask_app_portfolio/**"
-      - ".github/workflows/flask_app_portfolio.yml"
+      - ".github/workflows/flask-app-portfolio.yml"
 
 jobs:
   build:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Update Kubernetes manifest image tag
         run: |
-          sed -i "s|image: zaid/flask-app-portfolio:.*|image: zaid/flask-app-portfolio:${{ github.sha }}|" k8s-apps/flask-app-portfolio/deployment.yaml
+          sed -i "s|image: zaid/flask-app-portfolio:.*|image: zaid/flask-app-portfolio:${{ github.sha }}|" k8s-apps/flask_app_portfolio/deployment.yaml
 
       - name: Commit updated image tag
         run: |
