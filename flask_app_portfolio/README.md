@@ -1,6 +1,6 @@
 # Flask Portfolio App
 
-A personal portfolio website built with Flask, featuring user authentication, a guestbook commenting system, and deployment to my local kubernetes vms via GitHub Actions.
+A personal portfolio website built with Flask, featuring user authentication, a guestbook commenting system, and deployment to my local kubernetes vms provisioned using ProxMox via GitHub Actions.
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.1.3-green)
