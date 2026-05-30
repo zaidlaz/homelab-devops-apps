@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zen-ecommerce
+  namespace: zen-ecommerce
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: zen-ecommerce
+  template:
+    metadata:
+      labels:
+        app: zen-ecommerce
+    spec:
+      containers:
+        - name: zen-ecommerce
+          image: zaid/zen-ecommerce:latest
+          ports:
+            - containerPort: 3000
