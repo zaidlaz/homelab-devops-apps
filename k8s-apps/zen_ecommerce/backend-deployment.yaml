@@ -19,3 +19,18 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
+        env:
+        - name: DB_HOST
+          value: db
+
+        - name: DB_PORT
+          value: "5432"
+
+        - name: DB_NAME
+          value: ecommerce_db
+
+        - name: DB_USER
+          value: ecom_user
+
+        - name: DB_PASSWORD
+          value: SuperSecret123
