@@ -1,45 +1,72 @@
 name: Build and Deploy Zen E-commerce
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "zen_ecommerce/**"
-      - "k8s-apps/zen_ecommerce/**"
-      - ".github/workflows/zen-ecommerce.yml"
+workflow_dispatch:
+push:
+branches:
+- main
+paths:
+- "zen_ecommerce/**"
+- "k8s-apps/zen_ecommerce/**"
+- ".github/workflows/zen-ecommerce.yml"
 
 permissions:
-  contents: write
+contents: write
 
 jobs:
-  build-and-update:
-    runs-on: ubuntu-latest
+build-and-update:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+```
+steps:
+  - name: Checkout repo
+    uses: actions/checkout@v4
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+  - name: Login to Docker Hub
+    uses: docker/login-action@v3
+    with:
+      username: ${{ secrets.DOCKERHUB_USERNAME }}
+      password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
-        run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/zen-ecommerce:${{ github.sha }} ./zen_ecommerce
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/zen-ecommerce:${{ github.sha }}
+  - name: Build and Push Backend
+    run: |
+      docker build \
+        -t ${{ secrets.DOCKERHUB_USERNAME }}/zen-ecommerce-backend:${{ github.sha }} \
+        ./zen_ecommerce/src/backend
 
-      - name: Update Kubernetes manifest image tag
-        run: |
-          sed -i "s|image: .*/zen-ecommerce:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/zen-ecommerce:${{ github.sha }}|" k8s-apps/zen_ecommerce/deployment.yaml
+      docker push \
+        ${{ secrets.DOCKERHUB_USERNAME }}/zen-ecommerce-backend:${{ github.sha }}
 
-      - name: Commit updated manifest
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add k8s-apps/zen_ecommerce/deployment.yaml
-          git commit -m "Update zen-ecommerce image to ${{ github.sha }}" || echo "No changes to commit"
-          git push
+  - name: Build and Push Frontend
+    run: |
+      docker build \
+        --build-arg NEXT_PUBLIC_API_URL=http://api.zen.lab \
+        -t ${{ secrets.DOCKERHUB_USERNAME }}/zen-ecommerce-frontend:${{ github.sha }} \
+        ./zen_ecommerce/src/frontend
+
+      docker push \
+        ${{ secrets.DOCKERHUB_USERNAME }}/zen-ecommerce-frontend:${{ github.sha }}
+
+  - name: Update Backend Deployment
+    run: |
+      sed -i "s|image: .*zen-ecommerce-backend:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/zen-ecommerce-backend:${{ github.sha }}|" \
+      k8s-apps/zen_ecommerce/backend-deployment.yaml
+
+  - name: Update Frontend Deployment
+    run: |
+      sed -i "s|image: .*zen-ecommerce-frontend:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/zen-ecommerce-frontend:${{ github.sha }}|" \
+      k8s-apps/zen_ecommerce/frontend-deployment.yaml
+
+  - name: Commit Updated Manifests
+    run: |
+      git config user.name "github-actions"
+      git config user.email "github-actions@github.com"
+
+      git add \
+        k8s-apps/zen_ecommerce/backend-deployment.yaml \
+        k8s-apps/zen_ecommerce/frontend-deployment.yaml
+
+      git commit -m "Update Zen Ecommerce images to ${{ github.sha }}" || echo "No changes"
+
+      git push
+```
