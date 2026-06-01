@@ -4,8 +4,8 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Zen E-Commerce',
-  description: 'Zen E-Commerce built with Next.js and FastAPI',
+  title: 'Zen E-Commerce Homelab v2',
+  description: 'Zen E-Commerce Homelab built with Next.js and FastAPI',
 }
 
 export default function RootLayout({
