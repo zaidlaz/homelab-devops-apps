@@ -33,8 +33,14 @@ spec:
           value: ecom_user
 
         - name: DB_PASSWORD
-          value: SuperSecret123
+          valueFrom:
+            secretKeyRef:
+              name: zen-ecommerce-secrets
+              key: db-password
         - name: ADMIN_EMAIL
           value: "admin@example.com"
         - name: ADMIN_PASSWORD
-          value: "YourSecurePassword123!"
+          valueFrom:
+            secretKeyRef:
+              name: zen-ecommerce-secrets
+              key: admin-password
