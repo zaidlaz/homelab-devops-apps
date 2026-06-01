@@ -34,3 +34,7 @@ spec:
 
         - name: DB_PASSWORD
           value: SuperSecret123
+        - name: ADMIN_EMAIL
+          value: "admin@example.com"
+        - name: ADMIN_PASSWORD
+          value: "YourSecurePassword123!"

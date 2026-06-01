@@ -50,6 +50,11 @@ def seed_admin_if_missing(db: Session) -> None:
             )
         )
         db.commit()
+    else:
+        # Update password if envvar has changed
+        if not verify_password(settings.admin_password, existing.password_hash):
+            existing.password_hash = hash_password(settings.admin_password)
+            db.commit()
 
 
 def seed_products_if_missing(db: Session) -> None:
