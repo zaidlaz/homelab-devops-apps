@@ -68,4 +68,3 @@ steps:
       git commit -m "Update Zen Ecommerce images to ${{ github.sha }}" || echo "No changes"
 
       git push
-```
