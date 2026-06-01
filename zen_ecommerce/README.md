@@ -1,31 +1,39 @@
-﻿# zen-ecommerce
+﻿# Zen E-Commerce
 
-Cloud-native e-commerce platform for Zen Pte Ltd built on Azure.
-Team: Cloud Venture 
+A full-stack electronics e-commerce platform built with **FastAPI**, **Next.js**, and **PostgreSQL** for my **DevOps homelab**. It is containerised with Docker and deployed to a **Kubernetes cluster (1 master + 2 workers) running on Proxmox** via **GitHub Actions** and **Docker Hub**.
 
-## What this is
+## Stack
 
-An electronics e-commerce platform with a FastAPI backend,
-Next.js frontend, and full CI/CD pipeline deploying to Azure
-Container Apps via GitHub Actions and Terraform.
+| Layer | Technology |
+|-------|------------|
+| Frontend | Next.js 15 (React 18 + TypeScript + Bootstrap 5) |
+| Backend | FastAPI (Python 3.12+) + SQLAlchemy + Uvicorn |
+| Database | PostgreSQL 15 |
+| Local Dev | Docker Compose |
+| CI/CD | GitHub Actions |
+| Registry | Docker Hub |
+| Deployment | Kubernetes (raw manifests) |
 
 ## Prerequisites
 
-- Docker Desktop
-- Node.js 20 LTS
-- Python 3.12
-- Azure CLI
-- Terraform 1.0+
+- Docker & Docker Compose
+- Node.js 20 LTS (for local frontend dev)
+- Python 3.12+ (for local backend dev)
+- A Kubernetes cluster on **Proxmox** — **1 master + 2 worker nodes**
+- `kubectl` configured to talk to your cluster
 - Git
 
-## Run locally
+## Run locally (Docker Compose)
 
 ```bash
-git clone https://github.com/cloud-venture-pte-ltd/zen-ecommerce.gitcd zen-ecommerce 
+cd zen_ecommerce
 cp .env.example .env
-echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > src/frontend/.env.local
 docker compose up --build
 ```
+
+The app will be available at:
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://localhost:8000
 
 Test health endpoints:
 ```bash
@@ -34,32 +42,49 @@ curl http://localhost:8000/ready    # {"status":"ready"}
 curl http://localhost:3000/api/health  # {"status":"ok"}
 ```
 
-## Live environments
+## Deploy to Kubernetes
 
-| Environment | Backend | Frontend |
-|-------------|---------|----------|
-| dev | https://zen-backend-dev.nicemushroom-f0157107.southeastasia.azurecontainerapps.io | https://zen-frontend-dev.nicemushroom-f0157107.southeastasia.azurecontainerapps.io |
+### 1. GitHub Actions CI/CD
 
-## Deploy
+The workflow (`.github/workflows/zen-ecommerce.yml`) automatically:
+1. Builds Docker images for the backend and frontend
+2. Pushes them to **Docker Hub**
+3. Updates the image tags in the Kubernetes manifests
+4. Commits the updated manifests back to the repo
 
-Push to a feature branch → open PR to dev → pipeline runs lint →
-merge → pipeline builds Docker images → pushes to ACR with SHA tag →
-deploys to Container Apps automatically.
+**Required repository secrets:**
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
 
-## Team
+Trigger a deployment by pushing to `main` or run the workflow manually from the **Actions** tab.
 
-| Name | Role | Branch |
-|------|------|--------|
-| Spencer | DevOps lead | feat/infra, feat/devops |
-| Sarah | DevOps 2 | feat/infra, feat/devops |
-| Zaid | Backend lead | feat/backend |
-| Lan Tao | Frontend + assist | feat/backend |
+### 2. Apply to your local cluster
+
+After the workflow commits the updated manifests:
+
+```bash
+# From the repo root
+kubectl apply -f k8s-apps/zen_ecommerce/
+```
+
+> **Note:** Create the required secrets manually before applying:
+> ```bash
+> kubectl create secret generic zen-ecommerce-secrets \
+>   --from-literal=db-password='<your-db-password>' \
+>   --from-literal=admin-password='<your-admin-password>'
+> ```
 
 ## Repo structure
 
 ```
-src/backend/    FastAPI backend
-src/frontend/   Next.js frontend
-terraform/      Azure infrastructure as code
-.github/        CI/CD pipeline and repo config
+zen_ecommerce/
+├── src/
+│   ├── backend/          FastAPI backend (models, auth, API routes)
+│   └── frontend/         Next.js frontend (React + TypeScript)
+├── docker-compose.yml    Local orchestration
+├── .env.example          Environment variable template
+└── README.md
+
+.github/workflows/        GitHub Actions CI/CD
+k8s-apps/zen_ecommerce/     Kubernetes manifests
 ```
