@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: zaid/zen-ecommerce-backend:91f83200de391837eb6bb4677e93cadb10fea9c3
+        image: zaid/zen-ecommerce-backend:99b78fa455814c52fdedcddd17bb53dd77a05393
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
