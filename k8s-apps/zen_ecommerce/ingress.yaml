@@ -5,11 +5,17 @@ metadata:
   namespace: zen-ecommerce
 spec:
   ingressClassName: traefik
-
   rules:
   - host: zen.lab
     http:
       paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: zen-ecommerce-backend-service
+            port:
+              number: 8000
       - path: /
         pathType: Prefix
         backend:
