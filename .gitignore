@@ -6,3 +6,9 @@ logs/
 *.swp
 instance/*.db
 .env
+
+# --- Kubernetes Secrets (NEVER COMMIT) ---
+**/secrets.yaml
+**/secret.yaml
+**/*-secret.yaml
+**/*-secrets.yaml
