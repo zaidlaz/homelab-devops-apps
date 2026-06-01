@@ -1,4 +1,5 @@
 import time
+
 import json 
 from decimal import Decimal
 from pathlib import Path
@@ -18,7 +19,7 @@ from pydantic import BaseModel
 app = FastAPI(
     title=settings.app_name,
     version="1.0.0",
-    description="Zen E-Commerce built with FastAPI and PostgreSQL",
+    description="Zen E-Commerce Homelab built with FastAPI and PostgreSQL",
 )
 
 app.add_middleware(
