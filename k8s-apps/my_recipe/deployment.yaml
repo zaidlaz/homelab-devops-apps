@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: my-recipe
-        image: zaid/my-recipe:660eb173d1652e6d9f58f0c3323a84b174548ffa
+        image: zaid/my-recipe:336b00ac29f4b544e87aa3359a5567b212cb7045
         ports:
         - containerPort: 5000
         env:
