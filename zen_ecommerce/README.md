@@ -8,7 +8,7 @@ A full-stack electronics e-commerce platform built with **FastAPI**, **Next.js**
 |-------|------------|
 | Frontend | Next.js 15 (React 18 + TypeScript + Bootstrap 5) |
 | Backend | FastAPI (Python 3.12+) + SQLAlchemy + Uvicorn |
-| Database | PostgreSQL 15 |
+| Database | PostgreSQL 16 |
 | Local Dev | Docker Compose |
 | CI/CD | GitHub Actions |
 | Registry | Docker Hub |
@@ -67,12 +67,26 @@ After the workflow commits the updated manifests:
 kubectl apply -f k8s-apps/zen_ecommerce/
 ```
 
-> **Note:** Create the required secrets manually before applying:
+> **Note:** Create the required secrets manually before applying. The database credentials are stored in `postgres-secret` and the application secrets in `zen-ecommerce-secrets`:
 > ```bash
+> # Create the namespace first
+> kubectl create namespace zen-ecommerce
+>
+> # Database secret (used by the postgres StatefulSet)
+> kubectl create secret generic postgres-secret \
+>   --namespace zen-ecommerce \
+>   --from-literal=POSTGRES_DB='ecommerce_db' \
+>   --from-literal=POSTGRES_USER='ecom_user' \
+>   --from-literal=POSTGRES_PASSWORD='<your-db-password>'
+>
+> # Application secret (used by the backend Deployment)
 > kubectl create secret generic zen-ecommerce-secrets \
+>   --namespace zen-ecommerce \
 >   --from-literal=db-password='<your-db-password>' \
 >   --from-literal=admin-password='<your-admin-password>'
 > ```
+>
+> The database runs as a **StatefulSet** with a 10Gi PVC using the `local-path` storage class. The backend connects via individual environment variables (`DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`) rather than a single `DATABASE_URL`.
 
 ## Repo structure
 
