@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-recipe
+  namespace: my-recipe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-recipe
+  template:
+    metadata:
+      labels:
+        app: my-recipe
+    spec:
+      containers:
+      - name: my-recipe
+        image: zaid/my-recipe:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DATA_DIR
+          value: /app/data
+        - name: UPLOAD_FOLDER
+          value: /app/uploads
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: my-recipe-secret
+              key: SECRET_KEY
+        volumeMounts:
+        - name: recipe-data
+          mountPath: /app/data
+        - name: recipe-uploads
+          mountPath: /app/uploads
+      volumes:
+      - name: recipe-data
+        persistentVolumeClaim:
+          claimName: my-recipe-data-pvc
+      - name: recipe-uploads
+        persistentVolumeClaim:
+          claimName: my-recipe-uploads-pvc

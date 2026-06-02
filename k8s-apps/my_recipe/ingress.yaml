@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: my-recipe-ingress
+  namespace: my-recipe
+
+spec:
+  ingressClassName: traefik
+
+  rules:
+  - host: recipe.lab
+
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+
+        backend:
+          service:
+            name: my-recipe-service
+            port:
+              number: 5000
