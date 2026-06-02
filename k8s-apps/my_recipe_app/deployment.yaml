@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: my-recipe-app
-          image: zaid/my-recipe-app:latest
+          image: zaid/my-recipe-app:4e41a18ebd479ab6e4508a3e6a891a5d5a1cdf34
           ports:
             - containerPort: 5000
           env:
