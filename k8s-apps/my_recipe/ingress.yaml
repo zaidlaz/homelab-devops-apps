@@ -4,9 +4,16 @@ kind: Ingress
 metadata:
   name: my-recipe-ingress
   namespace: my-recipe
+  annotations:
+    cert-manager.io/cluster-issuer: homelab-ca
 
 spec:
   ingressClassName: traefik
+
+  tls:
+  - hosts:
+      - recipe.lab
+    secretName: recipe-lab-tls
 
   rules:
   - host: recipe.lab
