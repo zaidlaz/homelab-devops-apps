@@ -1,103 +1,154 @@
 # My Recipes - Flask Recipe Manager
 
-A beautiful, feature-rich Flask web application for managing your recipe collections. Upload, download, update, and delete recipes with an intuitive web interface.
+A beautiful, feature-rich Flask web application for managing your recipe collections. Create, organize, search, and share recipes with an intuitive web interface. Designed for both local development and production Kubernetes deployments with HTTPS support.
 
 ## Features
 
-- **Recipe Management**: Create, view, edit, and delete recipes
-- **Collections**: Organize recipes into collections
-- **Search & Filter**: Search by title, description, or tags; filter by category and collection
-- **Import/Export**: Import recipes from JSON files and export individual recipes, collections, or all recipes
-- **Responsive Design**: Works beautifully on desktop, tablet, and mobile
-- **Modern UI**: Clean, modern interface with smooth animations
+- **Recipe Management**: Create, view, edit, and delete recipes with rich metadata (prep time, cook time, servings, category, tags)
+- **Collections**: Organize recipes into named collections for easy grouping
+- **Search & Filter**: Full-text search by title, description, or tags; filter by category and collection
+- **Import/Export**: Import recipes from JSON files and export individual recipes, collections, or your entire library
+- **Responsive Design**: Clean, modern UI that works beautifully on desktop, tablet, and mobile
+- **Persistent Storage**: SQLite database with persistent volumes for data and file uploads
+- **Automated Backups**: Scheduled daily backups of database and uploads via Kubernetes CronJob
+- **HTTPS Ready**: Kubernetes Ingress with TLS termination via cert-manager and Traefik
+
+## Technology Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Backend** | Python 3.12, Flask 3.x, Flask-SQLAlchemy, Flask-WTF, Gunicorn |
+| **Database** | SQLite (persistent via PVC in Kubernetes) |
+| **Frontend** | Jinja2 templates, custom CSS/JS |
+| **Container** | Docker (python:3.12-slim) |
+| **Orchestration** | Kubernetes |
+| **Ingress / TLS** | Traefik + cert-manager (cluster issuer: `homelab-ca-issuer`) |
+| **Storage** | local-path StorageClass (2Gi data, 5Gi uploads, 5Gi backups) |
 
 ## Quick Start
 
-### Option 1: Docker (Recommended)
-
-The easiest way to run the app is with Docker Compose:
+### Local Development
 
 ```bash
-# Build and start the container
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+python app.py
+```
+
+The app will be available at `http://localhost:5000`.
+
+### Docker Compose
+
+```bash
+# Build and start
 docker-compose up -d
 
 # View logs
 docker-compose logs -f
 
-# Stop the container
+# Stop
 docker-compose down
 ```
 
-The app will be available at `http://localhost:5000`
+The app will be available at `http://localhost:5001`.
 
-Data is persisted in Docker volumes (`recipe-data` and `recipe-uploads`).
+### Kubernetes Deployment (Production)
 
-#### Docker Environment Variables
+All manifests are located in `k8s-apps/my_recipe/`.
 
-You can customize the container by setting environment variables in `docker-compose.yml` or a `.env` file:
+```bash
+# 1. Apply namespace and secrets
+kubectl apply -f k8s-apps/my_recipe/namespace.yaml
+kubectl apply -f k8s-apps/my_recipe/secret.yaml
+
+# 2. Apply persistent storage
+kubectl apply -f k8s-apps/my_recipe/pvc-data.yaml
+kubectl apply -f k8s-apps/my_recipe/pvc-uploads.yaml
+kubectl apply -f k8s-apps/my_recipe/backup-pvc.yaml
+
+# 3. Deploy application
+kubectl apply -f k8s-apps/my_recipe/deployment.yaml
+kubectl apply -f k8s-apps/my_recipe/service.yaml
+
+# 4. Configure HTTPS ingress
+kubectl apply -f k8s-apps/my_recipe/ingress.yaml
+
+# 5. Enable automated backups
+kubectl apply -f k8s-apps/my_recipe/backup-cronjob.yaml
+```
+
+The application will be available at `https://recipe.lab` (TLS secured via cert-manager).
+
+#### Kubernetes Architecture
+
+| Resource | Purpose |
+|----------|---------|
+| `Namespace` | `my-recipe` — isolates all application resources |
+| `Deployment` | Runs the Flask app container (`zaid/my-recipe:<sha>`) |
+| `Service` | ClusterIP exposing port 5000 |
+| `Ingress` | Traefik ingress with TLS (`recipe-lab-tls`) for `recipe.lab` |
+| `Secret` | Stores `SECRET_KEY` for Flask sessions |
+| `PVC` (data) | 2Gi persistent SQLite database |
+| `PVC` (uploads) | 5Gi persistent file uploads |
+| `PVC` (backup) | 5Gi backup storage for CronJob |
+| `CronJob` | Daily at 02:00 — backs up `recipes.db` and `/uploads` |
+
+## Environment Variables
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SECRET_KEY` | `change-me-in-production` | Flask secret key |
-| `DATABASE_URL` | `sqlite:///data/recipes.db` | Database connection string |
-
-#### Building the Docker Image
-
-```bash
-# Build the image
-docker build -t my-recipes .
-
-# Run the container
-docker run -d -p 5000:5000 -v recipe-data:/app/data -v recipe-uploads:/app/uploads my-recipes
-```
-
-### Option 2: Local Development
-
-#### 1. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-#### 2. Set Up Environment (Optional)
-
-Copy the example environment file and customize:
-
-```bash
-cp .env.example .env
-```
-
-#### 3. Run the Application
-
-```bash
-python app.py
-```
-
-The app will be available at `http://localhost:5000`
-
-#### 4. Initialize Database (Optional)
-
-If you want to initialize the database manually:
-
-```bash
-flask --app app init-db
-```
+| `SECRET_KEY` | `dev-secret-key-change-in-production` | Flask secret key (required in production) |
+| `DATA_DIR` | `/app/data` | Path to SQLite database directory |
+| `UPLOAD_FOLDER` | `/app/uploads` | Path to file uploads directory |
+| `DATABASE_URL` | — | Optional full database URI (overrides `DATA_DIR`) |
+| `FLASK_ENV` | `production` | Flask environment mode |
 
 ## Project Structure
 
 ```
-my_recipe_app/
-├── app.py                  # Main Flask application
-├── config.py               # Configuration settings
-├── models.py               # Database models (Recipe, Collection)
+my_recipe/
+├── app.py                  # Main Flask application (routes, views)
+├── config.py               # Configuration settings & environment loader
+├── models.py               # SQLAlchemy models (Recipe, Collection)
 ├── forms.py                # WTForms form definitions
 ├── requirements.txt        # Python dependencies
-├── Dockerfile              # Docker image definition
-├── docker-compose.yml      # Docker Compose configuration
-├── entrypoint.sh           # Docker container startup script
-├── .env.example            # Example environment variables
-├── templates/              # HTML templates
-│   ├── base.html           # Base layout
+├── Dockerfile              # Container image definition
+├── docker-compose.yml      # Local Docker Compose stack
+├── entrypoint.sh           # Container startup script (init DB + gunicorn)
+├── README.md               # This file
+├── data/                   # SQLite database (persistent in Docker/K8s)
+├── instance/               # Flask instance folder
+├── uploads/                # Uploaded files (persistent in Docker/K8s)
+├── static/
+│   ├── css/style.css       # Application styles
+│   └── js/main.js          # Application scripts
+└── templates/              # Jinja2 HTML templates
+    ├── base.html
+    ├── index.html
+    ├── view_recipe.html
+    ├── create_recipe.html
+    ├── edit_recipe.html
+    ├── collections.html
+    ├── view_collection.html
+    ├── create_collection.html
+    ├── edit_collection.html
+    ├── import.html
+    ├── 404.html
+    └── 500.html
+
+k8s-apps/my_recipe/         # Kubernetes manifests
+├── namespace.yaml
+├── secret.yaml
+├── pvc-data.yaml
+├── pvc-uploads.yaml
+├── backup-pvc.yaml
+├── deployment.yaml
+├── service.yaml
+├── ingress.yaml
+└── backup-cronjob.yaml
+```
 │   ├── index.html          # Home page with recipe grid
 │   ├── view_recipe.html    # Recipe detail page
 │   ├── create_recipe.html  # Create recipe form
