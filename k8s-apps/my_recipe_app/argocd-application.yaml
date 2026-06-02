@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-recipe-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zaidlaz/homelab-devops-apps.git
+    targetRevision: main
+    path: k8s-apps/my_recipe_app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: my-recipe-app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

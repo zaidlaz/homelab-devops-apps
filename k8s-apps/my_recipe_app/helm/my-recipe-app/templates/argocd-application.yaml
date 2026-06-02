@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ include "my-recipe-app.fullname" . }}
+  namespace: argocd
+  labels:
+    {{- include "my-recipe-app.labels" . | nindent 4 }}
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/zaidlaz/homelab-devops-apps.git
+    targetRevision: main
+    path: k8s-apps/my_recipe_app
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ .Release.Namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

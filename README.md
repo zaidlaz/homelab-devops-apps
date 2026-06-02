@@ -8,6 +8,7 @@ This repository contains the applications and Kubernetes manifests for my person
 |-----|-------|-----------|
 | [Flask Portfolio](flask_app_portfolio/) | Flask + SQLite + Gunicorn | http://localhost:5004 |
 | [Zen E-Commerce](zen_ecommerce/) | FastAPI + Next.js + PostgreSQL | http://localhost:3000 |
+| [My Recipe App](my_recipe_app/) | Flask + SQLite + Gunicorn | http://localhost:5001 |
 
 ## Homelab Architecture
 
@@ -32,10 +33,12 @@ This repository contains the applications and Kubernetes manifests for my person
 ```
 .
 ├── flask_app_portfolio/      # Flask portfolio app (source + Docker)
+├── my_recipe_app/            # Flask recipe manager app (source + Docker)
 ├── zen_ecommerce/            # Full-stack e-commerce app (source + Docker)
 ├── k8s-apps/                 # Kubernetes manifests
 │   ├── demo-app/
 │   ├── flask_app_portfolio/
+│   ├── my_recipe_app/
 │   └── zen_ecommerce/
 └── .github/workflows/        # CI/CD pipelines
 ```
@@ -60,9 +63,31 @@ argocd app create zen-ecommerce \
   --dest-server https://kubernetes.default.svc \
   --dest-namespace zen-ecommerce \
   --sync-policy automated
+
+argocd app create my-recipe-app \
+  --repo https://github.com/zaidlaz/homelab-devops-apps.git \
+  --path k8s-apps/my_recipe_app \
+  --dest-server https://kubernetes.default.svc \
+  --dest-namespace my-recipe-app \
+  --sync-policy automated
 ```
 
-> **Note:** Secrets (e.g., `zen-ecommerce-secrets`) must be created manually on the cluster before syncing, as they are excluded from the repo for security.
+### Helm Deployment (Alternative)
+Apps can also be deployed using Helm charts (available for `my_recipe_app`):
+```bash
+# From mgmt01 VM
+helm install my-recipe-app ./k8s-apps/my_recipe_app/helm/my-recipe-app \
+  --namespace my-recipe-app \
+  --create-namespace \
+  --set secret.secretKey="your-actual-production-secret-key"
+
+# Upgrade
+helm upgrade my-recipe-app ./k8s-apps/my_recipe_app/helm/my-recipe-app \
+  --namespace my-recipe-app \
+  --set image.tag="<new-tag>"
+```
+
+> **Note:** Secrets (e.g., `zen-ecommerce-secrets`, `recipe-app-secrets`) must be created manually on the cluster before syncing, as they are excluded from the repo for security.
 
 ## Author
 

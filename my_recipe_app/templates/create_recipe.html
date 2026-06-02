@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Create Recipe - My Recipes{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-header">
+        <h1><i class="fas fa-plus-circle"></i> Create New Recipe</h1>
+        <p>Add a new recipe to your collection</p>
+    </div>
+
+    <form method="POST" class="recipe-form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-section">
+            <h2>Basic Information</h2>
+            
+            <div class="form-group">
+                {{ form.title.label }}
+                {{ form.title(class="form-control", placeholder="Recipe title") }}
+                {% if form.title.errors %}
+                    <div class="form-errors">
+                        {% for error in form.title.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                {{ form.description.label }}
+                {{ form.description(class="form-control", rows=3, placeholder="Brief description of the recipe") }}
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group col-3">
+                    {{ form.prep_time.label }}
+                    {{ form.prep_time(class="form-control", placeholder="Minutes") }}
+                </div>
+                
+                <div class="form-group col-3">
+                    {{ form.cook_time.label }}
+                    {{ form.cook_time(class="form-control", placeholder="Minutes") }}
+                </div>
+                
+                <div class="form-group col-3">
+                    {{ form.servings.label }}
+                    {{ form.servings(class="form-control", placeholder="Number") }}
+                </div>
+                
+                <div class="form-group col-3">
+                    {{ form.category.label }}
+                    {{ form.category(class="form-control") }}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form.image_url.label }}
+                {{ form.image_url(class="form-control", placeholder="https://example.com/image.jpg") }}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Ingredients</h2>
+            <p class="form-hint">Enter one ingredient per line (e.g., "2 cups flour")</p>
+            
+            <div class="form-group">
+                {{ form.ingredients(class="form-control", rows=8, placeholder="2 cups all-purpose flour\n1 tsp salt\n1 cup milk") }}
+                {% if form.ingredients.errors %}
+                    <div class="form-errors">
+                        {% for error in form.ingredients.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Instructions</h2>
+            <p class="form-hint">Enter one step per line</p>
+            
+            <div class="form-group">
+                {{ form.instructions(class="form-control", rows=10, placeholder="Preheat oven to 350°F\nMix dry ingredients in a bowl\nAdd wet ingredients and stir until combined") }}
+                {% if form.instructions.errors %}
+                    <div class="form-errors">
+                        {% for error in form.instructions.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>Organization</h2>
+            
+            <div class="form-row">
+                <div class="form-group col-6">
+                    {{ form.tags.label }}
+                    {{ form.tags(class="form-control", placeholder="dinner, italian, pasta") }}
+                </div>
+                
+                <div class="form-group col-6">
+                    {{ form.collection_id.label }}
+                    {{ form.collection_id(class="form-control") }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-save"></i> Create Recipe
+            </button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
