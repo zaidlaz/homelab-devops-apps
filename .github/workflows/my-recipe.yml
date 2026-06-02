@@ -6,9 +6,9 @@ on:
     branches:
       - main
     paths:
-      - "my_recipe_app/**"
-      - "k8s-apps/my_recipe_app/**"
-      - ".github/workflows/my-recipe-app.yml"
+      - "my_recipe/**"
+      - "k8s-apps/my_recipe/**"
+      - ".github/workflows/my-recipe.yml"
 
 permissions:
   contents: write
@@ -29,17 +29,17 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-recipe-app:${{ github.sha }} ./my_recipe_app
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-recipe-app:${{ github.sha }}
+          sudo docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/my-recipe:${{ github.sha }} ./my_recipe
+          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-recipe:${{ github.sha }}
 
       - name: Update Kubernetes manifest image tag
         run: |
-          sed -i "s|image: .*/my-recipe-app:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/my-recipe-app:${{ github.sha }}|" k8s-apps/my_recipe_app/deployment.yaml
+          sed -i "s|image: .*/my-recipe:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/my-recipe:${{ github.sha }}|" k8s-apps/my_recipe/deployment.yaml
 
       - name: Commit updated manifest
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add k8s-apps/my_recipe_app/deployment.yaml
-          git commit -m "Update my-recipe-app image to ${{ github.sha }}" || echo "No changes to commit"
+          git commit -m "Update my-recipe image to ${{ github.sha }}" || echo "No changes to commit"
           git push
