@@ -5,7 +5,7 @@ metadata:
   name: my-recipe-ingress
   namespace: my-recipe
   annotations:
-    cert-manager.io/cluster-issuer: homelab-ca
+    cert-manager.io/cluster-issuer: homelab-ca-issuer
 
 spec:
   ingressClassName: traefik
