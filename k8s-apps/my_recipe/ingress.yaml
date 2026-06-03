@@ -16,7 +16,7 @@ spec:
     secretName: recipe-lab-tls
 
   rules:
-  - host: recipe.lab
+  - host: recipe.zaidlaz.uk
 
     http:
       paths:
