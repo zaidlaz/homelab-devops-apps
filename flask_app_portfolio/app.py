@@ -92,8 +92,9 @@ PROFILE = {
             "description": "A field manual for production Linux performance engineering, covers kernel internals, hardware counters and root-cause methodologies.",
         },
         {
-            "title": "Network Scan Automation",
-            "description": "A scheduled scanning workflow that writes results to a web-accessible report using secure permissions."
+            "title": "Flask Recipe Manager",
+            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/main/my_recipe"
+            "description": "A beautiful, feature-rich Flask web application for managing your recipe collections. Create, organize, search, and share recipes with an intuitive web interface"
         },
     ]
 }
