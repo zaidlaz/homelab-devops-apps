@@ -93,8 +93,8 @@ PROFILE = {
         },
         {
             "title": "Flask Recipe Manager",
-            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/main/my_recipe"
-            "description": "A beautiful, feature-rich Flask web application for managing your recipe collections. Create, organize, search, and share recipes with an intuitive web interface"
+            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/main/my_recipe",
+            "description": "A beautiful, feature-rich Flask web application for managing your recipe collections. Create, organize, search, and share recipes with an intuitive web interface",
         },
     ]
 }
