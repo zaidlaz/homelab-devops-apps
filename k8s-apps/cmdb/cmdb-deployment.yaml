@@ -16,7 +16,7 @@ spec:
       serviceAccountName: cmdb-sa
       containers:
         - name: cmdb-app
-          image: zaid/homelab-cmdb:v6
+          image: zaid/homelab-cmdb:v2
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
