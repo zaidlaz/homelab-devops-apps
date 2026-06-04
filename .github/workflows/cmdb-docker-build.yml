@@ -9,6 +9,9 @@ on:
       - "k8s-apps/cmdb/**"
       - ".github/workflows/cmdb-docker-build.yml"
 
+permissions:
+  contents: write
+
 env:
   IMAGE_NAME: zaid/homelab-cmdb
 
