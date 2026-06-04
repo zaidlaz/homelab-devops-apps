@@ -250,6 +250,15 @@ body {
   background: rgba(15, 23, 42, 0.6);
   border-top: 1px solid rgba(148, 163, 184, 0.1);
   margin-top: auto;
+  color: #94a3b8;
+}
+
+.footer .text-muted {
+  color: #94a3b8 !important;
+}
+
+.footer i {
+  color: #e2e8f0;
 }
 
 /* ===== Animations ===== */
