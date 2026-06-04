@@ -8,7 +8,8 @@ This repository contains the applications and Kubernetes manifests for my person
 |-----|-------|-----------|
 | [Flask Portfolio](flask_app_portfolio/) | Flask + SQLite + Gunicorn | http://localhost:5004 |
 | [Zen E-Commerce](zen_ecommerce/) | FastAPI + Next.js + PostgreSQL | http://localhost:3000 |
-| [My Recipe App](my_recipe_app/) | Flask + SQLite + Gunicorn | http://localhost:5001 |
+| [My Recipe App](my_recipe/) | Flask + SQLite + Gunicorn | http://localhost:5001 |
+| [HomeLab CMDB](cmdb/) | Flask + PostgreSQL + K8s Discovery | http://cmdb.lab |
 
 ## Homelab Architecture
 
@@ -32,14 +33,17 @@ This repository contains the applications and Kubernetes manifests for my person
 
 ```
 .
+├── cmdb/                     # HomeLab CMDB app (source + Docker)
 ├── flask_app_portfolio/      # Flask portfolio app (source + Docker)
-├── my_recipe_app/            # Flask recipe manager app (source + Docker)
+├── my_recipe/                # Flask recipe manager app (source + Docker)
 ├── zen_ecommerce/            # Full-stack e-commerce app (source + Docker)
 ├── k8s-apps/                 # Kubernetes manifests
+│   ├── cmdb/
 │   ├── demo-app/
 │   ├── flask_app_portfolio/
-│   ├── my_recipe_app/
+│   ├── my_recipe/
 │   └── zen_ecommerce/
+├── argocd/                   # Argo CD Application manifests
 └── .github/workflows/        # CI/CD pipelines
 ```
 
@@ -57,6 +61,13 @@ Each app has its own workflow that:
 
 Deploy an app by creating an Argo CD Application:
 ```bash
+argocd app create cmdb \
+  --repo https://github.com/zaidlaz/homelab-devops-apps.git \
+  --path k8s-apps/cmdb \
+  --dest-server https://kubernetes.default.svc \
+  --dest-namespace cmdb \
+  --sync-policy automated
+
 argocd app create zen-ecommerce \
   --repo https://github.com/zaidlaz/homelab-devops-apps.git \
   --path k8s-apps/zen_ecommerce \
@@ -66,7 +77,7 @@ argocd app create zen-ecommerce \
 
 argocd app create my-recipe-app \
   --repo https://github.com/zaidlaz/homelab-devops-apps.git \
-  --path k8s-apps/my_recipe_app \
+  --path k8s-apps/my_recipe \
   --dest-server https://kubernetes.default.svc \
   --dest-namespace my-recipe-app \
   --sync-policy automated
