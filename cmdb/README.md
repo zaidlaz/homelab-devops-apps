@@ -9,7 +9,7 @@ A lightweight **Configuration Management Database (CMDB)** for tracking homelab 
 - **Domain Inventory** — Record DNS mappings, providers, and public/private access flags
 - **Certificate Tracking** — Log SSL/TLS certificates with expiry dates and automatic "days remaining" calculation
 - **Kubernetes Discovery** — One-click discovery of cluster nodes and namespaces via in-cluster ServiceAccount
-- **Bootstrap UI** — Clean, responsive dashboard built with Bootstrap 5
+- **Professional Dark UI** — Modern glassmorphism dashboard with dark slate theme, Bootstrap 5, Bootstrap Icons, Inter font, and smooth animations
 - **Health Endpoint** — `/health` for Kubernetes liveness/readiness probes
 
 ## Tech Stack
@@ -20,7 +20,7 @@ A lightweight **Configuration Management Database (CMDB)** for tracking homelab 
 | Database | PostgreSQL 16 |
 | K8s Client | `kubernetes` Python SDK |
 | Server | Gunicorn |
-| Frontend | Jinja2 templates, Bootstrap 5 |
+| Frontend | Jinja2 templates, Bootstrap 5, Bootstrap Icons, Inter font, custom dark theme CSS |
 | Container | Docker (python:3.12-slim) |
 | Orchestration | Kubernetes (raw manifests) |
 | Ingress | Traefik |
@@ -166,6 +166,23 @@ The GitHub Actions workflow (`.github/workflows/cmdb-docker-build.yml`) automati
 4. Commits the updated manifest back to the repo
 
 Argo CD then detects the change and syncs the deployment automatically.
+
+## UI / UX
+
+The CMDB features a **modern dark-themed dashboard** designed for infrastructure monitoring:
+
+- **Dark Slate Theme** — Gradient background (`#0f172a` → `#1e293b`) with high-contrast text
+- **Glassmorphism Cards** — Frosted glass effect with subtle borders and shadows
+- **Color-Coded Categories** — Each entity type has a unique accent color:
+  - Assets: Blue (`#38bdf8`)
+  - Services: Green (`#34d399`)
+  - Domains: Amber (`#fbbf24`)
+  - Certificates: Pink (`#f472b6`)
+- **Status Badges** — Semantic colors for Running, Down, Warning, and Unknown states
+- **Bootstrap Icons** — Contextual icons on every page for visual clarity
+- **Inter Font** — Clean, modern typography from Google Fonts
+- **Smooth Animations** — Fade-in effects and hover transitions on cards and buttons
+- **Responsive Layout** — Mobile-friendly navbar with collapsible menu
 
 ## Endpoints
 
