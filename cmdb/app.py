@@ -1,4 +1,5 @@
 import os
+from kubernetes import client, config
 from datetime import date, datetime
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -102,10 +103,64 @@ public_access=True),
     ])
     db.session.commit()
 
+def discover_kubernetes():
+    try:
+        config.load_incluster_config()
+    except Exception:
+        config.load_kube_config()
+
+    v1 = client.CoreV1Api()
+    apps_v1 = client.AppsV1Api()
+    networking_v1 = client.NetworkingV1Api()
+
+    discovered = []
+
+    for node in v1.list_node().items:
+        discovered.append({
+            "hostname": node.metadata.name,
+            "ip_address": next(
+                (addr.address for addr in node.status.addresses if addr.type == "InternalIP"),
+                "N/A"
+            ),
+            "asset_type": "Kubernetes Node",
+            "status": "Ready"
+        })
+
+    for ns in v1.list_namespace().items:
+        discovered.append({
+            "hostname": ns.metadata.name,
+            "ip_address": "N/A",
+            "asset_type": "Kubernetes Namespace",
+            "status": ns.status.phase
+        })
+
+    return discovered
+
 @app.before_request
 def init_database():
     db.create_all()
     seed_data()
+
+
+@app.route("/discover/kubernetes")
+def discover_k8s():
+    items = discover_kubernetes()
+
+    for item in items:
+        existing = Asset.query.filter_by(hostname=item["hostname"]).first()
+
+        if not existing:
+            asset = Asset(
+                hostname=item["hostname"],
+                ip_address=item["ip_address"],
+                asset_type=item["asset_type"],
+                status=item["status"]
+            )
+            db.session.add(asset)
+
+    db.session.commit()
+
+    return redirect(url_for("assets"))
 
 @app.route("/")
 def dashboard():

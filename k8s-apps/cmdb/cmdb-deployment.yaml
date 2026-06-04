@@ -12,10 +12,11 @@ spec:
     metadata:
       labels:
         app: cmdb-app
-    spec:
+     spec:
+      serviceAccountName: cmdb-sa
       containers:
         - name: cmdb-app
-          image: zaid/homelab-cmdb:v5
+          image: zaid/homelab-cmdb:v6
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
