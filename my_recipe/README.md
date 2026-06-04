@@ -272,6 +272,10 @@ export SECRET_KEY="your-secure-secret-key"
 export FLASK_ENV=production
 ```
 
+## Dashboard Preview
+
+![My Recipe Dashboard](my_recipe/docs/screenshots/myrecipe-dashboard.png)
+
 ## License
 
 MIT License
