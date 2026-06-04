@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: cmdb-app
-          image: zaid/homelab-cmdb:v4
+          image: zaid/homelab-cmdb:v5
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
