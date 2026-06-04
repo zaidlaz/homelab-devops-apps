@@ -206,7 +206,7 @@ On first startup, the database is automatically seeded with:
 
 ## Dashboard Preview
 
-![CMDB Dashboard](/docs/screenshots/cmdb-dashboard.png)
+![CMDB Dashboard](/cmdb/docs/screenshots/cmdb-dashboard.png)
 
 ## Author
 
