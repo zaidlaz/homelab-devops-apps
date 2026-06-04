@@ -204,6 +204,10 @@ On first startup, the database is automatically seeded with:
 - **Domains**: Internal (`*.lab`) and public (`*.zaidlaz.uk`) domains
 - **Certificates**: Homelab CA and Cloudflare/Let's Encrypt certs
 
+## Dashboard Preview
+
+<img src="cmdb/docs/screenshots/cmdb-dashboard.jpg" alt="CMDB Dashboard" width="800"/>
+
 ## Author
 
 **Zaid Lazim**
