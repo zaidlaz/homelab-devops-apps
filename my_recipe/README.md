@@ -274,7 +274,7 @@ export FLASK_ENV=production
 
 ## Dashboard Preview
 
-![My Recipe Dashboard](my_recipe/docs/screenshots/myrecipe-dashboard.png)
+![My Recipe Dashboard](docs/screenshots/myrecipe-dashboard.png)
 
 ## License
 
