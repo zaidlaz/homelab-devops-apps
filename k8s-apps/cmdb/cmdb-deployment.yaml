@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cmdb-app
+  namespace: cmdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cmdb-app
+  template:
+    metadata:
+      labels:
+        app: cmdb-app
+    spec:
+      containers:
+        - name: cmdb-app
+          image: zaid/homelab-cmdb:v4
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_USER
+              value: cmdbuser
+            - name: DB_PASSWORD
+              value: cmdbpassword
+            - name: DB_HOST
+              value: cmdb-postgres.cmdb.svc.cluster.local
+            - name: DB_NAME
+              value: cmdb

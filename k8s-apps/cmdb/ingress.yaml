@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cmdb-ingress
+  namespace: cmdb
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: cmdb.lab
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cmdb-app
+                port:
+                  number: 80

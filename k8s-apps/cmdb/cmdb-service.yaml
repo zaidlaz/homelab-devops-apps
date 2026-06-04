@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cmdb-app
+  namespace: cmdb
+spec:
+  selector:
+    app: cmdb-app
+  ports:
+    - port: 80
+      targetPort: 5000
