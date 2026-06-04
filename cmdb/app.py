@@ -170,6 +170,7 @@ def dashboard():
         service_count=Service.query.count(),
         domain_count=Domain.query.count(),
         cert_count=Certificate.query.count(),
+        now=datetime.utcnow(),
     )
 
 @app.route("/assets", methods=["GET", "POST"])

@@ -1,11 +1,50 @@
-<!doctype html>
-<html>
-<head>
-  <title>HomeLab CMDB - services</title>
-</head>
-<body>
-  <h1>HomeLab CMDB - services</h1>
-  <p>services page is working.</p>
-  <p><a href="/">Back to Dashboard</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header animate-fade-in">
+  <h1><i class="bi bi-layers me-2"></i>Services</h1>
+  <p class="text-muted-custom">Track applications, monitoring tools, and network services across your homelab.</p>
+</div>
+
+<div class="card animate-fade-in" style="animation-delay: 0.1s;">
+  <div class="card-header d-flex align-items-center gap-2">
+    <i class="bi bi-list-ul text-info"></i>
+    Service Inventory
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Service Name</th>
+            <th>Type</th>
+            <th>Hostname</th>
+            <th>Port</th>
+            <th>Protocol</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for service in services %}
+          <tr>
+            <td><strong>{{ service.service_name }}</strong></td>
+            <td>{{ service.service_type or 'N/A' }}</td>
+            <td><code>{{ service.hostname or 'N/A' }}</code></td>
+            <td><code>{{ service.port or 'N/A' }}</code></td>
+            <td>{{ service.protocol }}</td>
+            <td>
+              {% if service.status in ['UP', 'Running', 'Healthy'] %}
+                <span class="badge badge-up">{{ service.status }}</span>
+              {% elif service.status in ['Down', 'Failed', 'Error'] %}
+                <span class="badge badge-down">{{ service.status }}</span>
+              {% else %}
+                <span class="badge badge-unknown">{{ service.status }}</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
