@@ -92,7 +92,7 @@ PROFILE = {
         },
         {
             "title": "Flask Recipe Manager",
-            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/ma>
+            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/main",
             "description": "A beautiful, feature-rich Flask web application for>
         },
         {
