@@ -70,6 +70,21 @@ PROFILE = {
                 "Optimized infrastructure cost by replacing managed DB with serverless PostgreSQL (Neon)",
                 ],
         },
+{
+            "title": "Enterprise DevOps Homelab Platform",
+            "repo_url": "https://github.com/zaidlaz/homelab-devops-mgmt",
+            "video_url": "https://youtu.be/OKY7_zPGjRg",
+            "description": [
+               "Designed and built a production-inspired DevOps homelab on a GMKTec Mini PC running Proxmox VE",
+               "Provisioned and managed Kubernetes infrastructure with dedicated control plane and worker nodes",
+               "Implemented GitOps deployment workflows using ArgoCD and GitHub repositories",
+               "Automated infrastructure provisioning using Terraform and Infrastructure as Code principles",
+               "Secured public services using Cloudflare Tunnel and private administration through Tailscale Zero Trust networking",
+               "Deployed observability stack using Prometheus, Grafana, Node Exporter and cAdvisor",
+               "Hosted multiple production-style applications including Portfolio Website, CMDB Platform and Recipe Manager",
+               "Created a complete architecture walkthrough video demonstrating enterprise infrastructure concepts",
+               ],
+        },
         {
             "title": "Flask Portfolio Website",
             "repo_url": "https://dev.azure.com/ZaidB/_git/flask-app-portfolio",

@@ -11,7 +11,14 @@
       <a href="{{ project.repo_url }}" target="_blank" rel="noopener noreferrer">
         View GitHub Repo
       </a>
+             {% if project.video_url %}
+      <a href="{{ project.video_url }}"
+      target="_blank"
+      class="btn btn-primary">
+      🎥 Watch HomeLab Walkthrough Video
+      </a>
      {% endif %}
+        {% endif %}
             <p>{{ project.description }}</p>
         </div>
     {% endfor %}
