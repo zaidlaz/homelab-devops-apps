@@ -70,7 +70,7 @@ PROFILE = {
                 "Optimized infrastructure cost by replacing managed DB with serverless PostgreSQL (Neon)",
                 ],
         },
-{
+        {
             "title": "Enterprise DevOps Homelab Platform",
             "repo_url": "https://github.com/zaidlaz/homelab-devops-mgmt",
             "video_url": "https://youtu.be/OKY7_zPGjRg",
@@ -92,8 +92,8 @@ PROFILE = {
         },
         {
             "title": "Flask Recipe Manager",
-            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/main",
-            "description": "A beautiful, feature-rich Flask web application for>
+            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/main/my_recipe",
+            "description": "A beautiful, feature-rich Flask web application for managing your recipe collections. Create, organize, search, and share recipes with an intuitive web interface.", 
         },
         {
             "title": "Server Health Dashboard",
