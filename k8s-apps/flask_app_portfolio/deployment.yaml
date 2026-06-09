@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: flask-app-portfolio
-          image: zaid/flask-app-portfolio:c640051a880813afe11df85784495e9891edc89c
+          image: zaid/flask-app-portfolio:f704e647ede61848dd26f693aeb710f62f6f5885
           ports:
             - containerPort: 5004
