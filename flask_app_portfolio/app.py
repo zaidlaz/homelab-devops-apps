@@ -91,25 +91,24 @@ PROFILE = {
             "description": "A personal portfolio site with login, registration, and guestbook commenting using Python, Flask, SQLite, and Flask-Login running on Azure AKS cluster using Azure CICD pipeline and Azure Repo",
         },
         {
+            "title": "Flask Recipe Manager",
+            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/ma>
+            "description": "A beautiful, feature-rich Flask web application for>
+        },
+        {
             "title": "Server Health Dashboard",
             "repo_url": "https://github.com/zaidlaz/grafana-prometheus-homelab-monitoring",
             "description": "A docker container running grafana and prometheus showing CPU, memory, disk, and network usage of several vms in my homelab",
         },
         {
-            "title": "System Activity Report Dashboard",
-            "repo_url": "https://github.com/zaidlaz/sarchart-docker",
-            "description": "A docker container running sarchart allows to convert sar output file to graphical representation",
+            "title": "HomeLab Operations CMDB",
+            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/main/cmdb",
+            "description": "A lightweight Configuration Management Database (CMDB) for tracking homelab infrastructure assets, services, domains, and SSL certificates. Built with Flask and PostgreSQL, it includes an automatic Kubernetes discovery feature that reads cluster nodes and namespaces via the Kubernetes API",
         },
-
         {
             "title": "Advanced Linux Server Performance & Troubleshooting",
             "repo_url": "https://github.com/zaidlaz/linux-server-performance-troubleshooting",
             "description": "A field manual for production Linux performance engineering, covers kernel internals, hardware counters and root-cause methodologies.",
-        },
-        {
-            "title": "Flask Recipe Manager",
-            "repo_url": "https://github.com/zaidlaz/homelab-devops-apps/tree/main/my_recipe",
-            "description": "A beautiful, feature-rich Flask web application for managing your recipe collections. Create, organize, search, and share recipes with an intuitive web interface",
         },
     ]
 }
