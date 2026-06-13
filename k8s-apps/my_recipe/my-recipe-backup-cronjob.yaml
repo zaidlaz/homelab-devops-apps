@@ -1,0 +1,68 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: my-recipe-backup
+  namespace: my-recipe
+spec:
+  schedule: "0 2 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: alpine:3.20
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -ex
+                  apk add --no-cache openssh-client rsync sqlite
+
+                  DATE=$(date +%Y%m%d-%H%M%S)
+                  BACKUP_DIR=/backup/$DATE
+
+                  mkdir -p $BACKUP_DIR
+                  cp /data/recipes.db $BACKUP_DIR/recipes.db
+                  cp -r /uploads $BACKUP_DIR/uploads
+
+                  sqlite3 $BACKUP_DIR/recipes.db "PRAGMA integrity_check;"
+
+                  cp /ssh/id_ed25519 /tmp/id_ed25519
+                  chmod 600 /tmp/id_ed25519
+
+                  rsync -avz \
+                    -e "ssh -i /tmp/id_ed25519 -o StrictHostKeyChecking=no" -o BatchMode=yes -o ConnectTimeout=10 \
+                    $BACKUP_DIR/ \
+                    viduka@192.168.13.210:/home/viduka/backups/my-recipe/$DATE/
+
+                  echo "Backup completed locally: $BACKUP_DIR"
+                  echo "Backup copied to mgmt01:/home/viduka/backups/my-recipe/$DATE"
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: uploads
+                  mountPath: /uploads
+                - name: backup
+                  mountPath: /backup
+                - name: ssh-key
+                  mountPath: /ssh
+                  readOnly: true
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: my-recipe-data-pvc
+            - name: uploads
+              persistentVolumeClaim:
+                claimName: my-recipe-uploads-pvc
+            - name: backup
+              persistentVolumeClaim:
+                claimName: my-recipe-backup-pvc
+            - name: ssh-key
+              secret:
+                secretName: my-recipe-backup-ssh
