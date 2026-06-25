@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: linux-kb
+  namespace: linux-kb
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: kb.zaidlaz.uk
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: linux-kb
+                port:
+                  number: 80

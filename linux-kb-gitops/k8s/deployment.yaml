@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linux-kb
+  namespace: linux-kb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: linux-kb
+  template:
+    metadata:
+      labels:
+        app: linux-kb
+    spec:
+      containers:
+        - name: linux-kb
+          image: zaid/linux-kb:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi

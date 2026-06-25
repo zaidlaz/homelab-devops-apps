@@ -1,0 +1,63 @@
+site_name: Linux Operations Knowledge Base
+site_description: Personal Linux troubleshooting KB for production operations, incidents, and resolutions.
+site_author: Zaid
+site_url: https://kb.zaidlaz.uk
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Troubleshooting:
+      - Server Slow: troubleshooting/server-slow.md
+      - Incident Template: troubleshooting/incident-template.md
+  - Linux:
+      - Memory:
+          - OOM Killer: linux/memory/oom-killer.md
+          - High Memory Usage: linux/memory/high-memory-usage.md
+      - CPU:
+          - High CPU Usage: linux/cpu/high-cpu-usage.md
+      - Filesystem:
+          - Filesystem Full: linux/filesystem/filesystem-full.md
+      - Network:
+          - Network Connectivity: linux/network/network-connectivity.md
+      - Performance:
+          - High Load Average: linux/performance/high-load-average.md
+  - VCS: vcs/vcs-service-group-offline.md
+  - VMware: vmware/vmware-linux-guest-slow.md
