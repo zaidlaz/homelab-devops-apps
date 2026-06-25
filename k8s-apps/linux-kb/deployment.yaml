@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: linux-kb
-          image: zaidlaz/linux-kb:latest
+          image: zaid/linux-kb:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
