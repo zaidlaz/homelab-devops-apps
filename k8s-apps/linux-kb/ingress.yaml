@@ -17,3 +17,14 @@ spec:
                 name: linux-kb
                 port:
                   number: 80
+
+    - host: kb.lab
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: linux-kb
+                port:
+                  number: 80
