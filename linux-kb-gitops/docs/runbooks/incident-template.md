@@ -1,54 +1,105 @@
+# Incident Title
+
+## Summary
+
+A brief summary of the incident.
+
 ---
-tags:
-  - incident
-  - template
----
-
-# Incident Template
-
-## Title
-
-Short issue title.
 
 ## Symptoms
 
-- What the user/app/team observed.
+- High CPU
+- Server slow
+- Application timeout
 
-## Impact
+---
 
-- Business/application impact.
+## Environment
 
-## Possible Causes
+| Item | Value |
+|------|-------|
+| OS | RHEL 8 |
+| Application | Oracle |
+| Environment | Production |
+| Server | server01 |
 
-- Cause 1
-- Cause 2
+---
 
-## Investigation Commands
+## Investigation
+
+### Commands
 
 ```bash
-hostname
-uptime
-df -h
-free -h
 top
+free -h
+vmstat 1
+iostat -x 1
+df -h
 journalctl -xe
 ```
 
-## Findings
+### Findings
 
-- What was found.
+Describe what was discovered.
+
+---
+
+## Root Cause
+
+Describe the actual root cause.
+
+---
 
 ## Resolution
 
-- What was done to restore service.
+Step-by-step resolution.
+
+Example:
+
+```bash
+systemctl restart httpd
+```
+
+---
 
 ## Verification
 
+How was the issue verified?
+
 ```bash
-systemctl status <service>
-curl -I http://localhost
+systemctl status httpd
+curl localhost
 ```
+
+---
+
+## Prevention
+
+- Monitoring
+- Alerting
+- Capacity planning
+- Patch
+
+---
 
 ## Lessons Learned
 
-- What can be improved.
+What should be improved?
+
+---
+
+## Related Articles
+
+- High CPU
+- Memory Leak
+- OOM Killer
+
+---
+
+## Tags
+
+linux
+cpu
+memory
+oracle
+production

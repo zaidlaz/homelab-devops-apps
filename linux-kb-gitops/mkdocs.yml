@@ -29,35 +29,71 @@ theme:
 
 plugins:
   - search
-  - minify:
-      minify_html: true
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - javascripts/mermaid.js
 
 markdown_extensions:
   - admonition
+  - attr_list
+  - md_in_html
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.highlight
   - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - tables
   - toc:
       permalink: true
 
 nav:
   - Home: index.md
-  - Troubleshooting:
-      - Server Slow: troubleshooting/server-slow.md
-      - Incident Template: troubleshooting/incident-template.md
-  - Linux:
-      - Memory:
-          - OOM Killer: linux/memory/oom-killer.md
-          - High Memory Usage: linux/memory/high-memory-usage.md
-      - CPU:
-          - High CPU Usage: linux/cpu/high-cpu-usage.md
-      - Filesystem:
-          - Filesystem Full: linux/filesystem/filesystem-full.md
-      - Network:
-          - Network Connectivity: linux/network/network-connectivity.md
-      - Performance:
-          - High Load Average: linux/performance/high-load-average.md
-  - VCS: vcs/vcs-service-group-offline.md
-  - VMware: vmware/vmware-linux-guest-slow.md
+
+  - Operations:
+      - Linux:
+          - Memory:
+              - OOM Killer: linux/memory/oom-killer.md
+              - High Memory Usage: linux/memory/high-memory-usage.md
+          - CPU:
+              - High CPU Usage: linux/cpu/high-cpu-usage.md
+          - Filesystem:
+              - Filesystem Full: linux/filesystem/filesystem-full.md
+          - Network:
+              - Network Connectivity: linux/network/network-connectivity.md
+          - Performance:
+              - High Load Average: linux/performance/high-load-average.md
+      - Kubernetes: kubernetes/index.md
+      - Docker: docker/index.md
+      - OpenShift: openshift/index.md
+
+  - Infrastructure:
+      - VCS: vcs/vcs-service-group-offline.md
+      - VMware: vmware/vmware-linux-guest-slow.md
+      - Oracle: oracle/index.md
+
+  - Monitoring:
+      - Overview: monitoring/index.md
+
+  - Knowledge:
+      - Runbooks:
+          - Generic Incident Template: runbooks/incident-template.md
+      - KB Templates:
+          - Linux Incident: kb-templates/linux-incident.md
+          - Kubernetes Incident: kb-templates/kubernetes-incident.md
+          - VCS Incident: kb-templates/vcs-incident.md
+      - Diagrams:
+          - Server Slow Flow: diagrams/server-slow-flow.md
+      - Troubleshooting:
+          - Server Slow: troubleshooting/server-slow.md
+          - Incident Template: troubleshooting/incident-template.md
+      - Interview Notes: interview/index.md
+      - Cheatsheets: cheatsheets/index.md
+
+  - Automation:
+      - Scripts: scripts/index.md
