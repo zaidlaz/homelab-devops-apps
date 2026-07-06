@@ -36,7 +36,10 @@ spec:
                   cp /ssh/id_ed25519 /tmp/id_ed25519
                   chmod 600 /tmp/id_ed25519
 
-                  rsync -avz -e 'ssh -i /tmp/id_ed25519 -o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=10' /backup/${DATE}/ viduka@192.168.13.210:/home/viduka/backups/my-recipe/${DATE}/
+                  rsync -avz \
+                    -e "ssh -i /tmp/id_ed25519 -o StrictHostKeyChecking=no -o BatchMode=yes -o ConnectTimeout=10" \
+                    $BACKUP_DIR/ \
+                    viduka@192.168.13.210:/home/viduka/backups/my-recipe/$DATE/
 
                   echo "Backup completed locally: $BACKUP_DIR"
                   echo "Backup copied to mgmt01:/home/viduka/backups/my-recipe/$DATE"
