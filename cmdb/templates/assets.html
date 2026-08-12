@@ -53,6 +53,7 @@
             <th>OS</th>
             <th>Status</th>
             <th>Owner</th>
+            <th class="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -72,6 +73,14 @@
               {% endif %}
             </td>
             <td>{{ asset.owner }}</td>
+            <td class="text-center">
+              <form action="{{ url_for('delete_asset', asset_id=asset.id) }}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-outline-danger"
+                        onclick="return confirm('Are you sure you want to delete {{ asset.hostname }}?');">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </form>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
