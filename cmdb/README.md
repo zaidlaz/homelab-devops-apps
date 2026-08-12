@@ -5,6 +5,7 @@ A lightweight **Configuration Management Database (CMDB)** for tracking homelab 
 ## Features
 
 - **Asset Management** — Track physical and virtual infrastructure (Proxmox hosts, VMs, Kubernetes nodes, etc.)
+- **Asset Deletion** — Remove hosts/assets from the CMDB via a confirmation-protected delete action
 - **Service Registry** — Monitor internal and external services with hostname, port, protocol, and status
 - **Domain Inventory** — Record DNS mappings, providers, and public/private access flags
 - **Certificate Tracking** — Log SSL/TLS certificates with expiry dates and automatic "days remaining" calculation
@@ -73,15 +74,18 @@ cmdb/
 ├── app.py                  # Main Flask application
 ├── requirements.txt        # Python dependencies
 ├── Dockerfile              # Container image build
+├── .gitignore              # Excludes secrets, venv, and local DBs from Git
 ├── static/
 │   └── style.css           # Custom styles
-└── templates/              # Jinja2 HTML templates
-    ├── base.html
-    ├── dashboard.html
-    ├── assets.html
-    ├── services.html
-    ├── domains.html
-    └── certificates.html
+├── templates/              # Jinja2 HTML templates
+│   ├── base.html
+│   ├── dashboard.html
+│   ├── assets.html
+│   ├── services.html
+│   ├── domains.html
+│   └── certificates.html
+└── docs/
+    └── screenshots/          # UI preview images
 ```
 
 ## Environment Variables
@@ -190,6 +194,7 @@ The CMDB features a **modern dark-themed dashboard** designed for infrastructure
 |-------|--------|-------------|
 | `/` | GET | Dashboard with counts |
 | `/assets` | GET, POST | List and add assets |
+| `/assets/<id>/delete` | POST | Delete an asset (with confirmation) |
 | `/services` | GET | List services |
 | `/domains` | GET | List domains |
 | `/certificates` | GET | List certificates |
